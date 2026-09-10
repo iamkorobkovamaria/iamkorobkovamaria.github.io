@@ -3,223 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Привет, мир!</title>
-    <style>
-        /* Основные стили для всей страницы */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            padding: 20px;
-        }
-
-        /* Карточка с контентом */
-        .card {
-            max-width: 640px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 40px;
-            padding: 40px 35px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Аватарка (иконка) */
-        .avatar {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(145deg, #f093fb, #f5576c);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px;
-            font-size: 60px;
-            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
-            user-select: none;
-        }
-
-        /* Заголовок */
-        h1 {
-            font-size: 2.6rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, #f6d365, #fda085);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-        }
-
-        .subhead {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: #d0c9f0;
-            margin-bottom: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 15px;
-        }
-
-        /* Текстовый блок */
-        .description {
-            font-size: 1.05rem;
-            line-height: 1.7;
-            color: #e4defa;
-            margin-bottom: 30px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 18px 22px;
-            border-radius: 28px;
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        /* Список интересов (чисто для красоты) */
-        .interests {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px 18px;
-            list-style: none;
-            margin: 25px 0 30px;
-            padding: 0;
-        }
-
-        .interests li {
-            background: rgba(255, 255, 255, 0.07);
-            padding: 8px 22px;
-            border-radius: 40px;
-            font-size: 0.95rem;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(2px);
-            color: #d9d2f2;
-            transition: all 0.2s;
-        }
-
-        .interests li:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.03);
-            border-color: #f6d365;
-        }
-
-        /* Кнопка */
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            border: none;
-            padding: 14px 40px;
-            border-radius: 60px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #fff;
-            text-decoration: none;
-            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.35);
-            transition: all 0.25s ease;
-            letter-spacing: 0.5px;
-            margin-top: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(245, 87, 108, 0.5);
-            background: linear-gradient(135deg, #f7a1fc, #f6687a);
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        /* Нижний колонтитул */
-        .footer {
-            margin-top: 35px;
-            font-size: 0.8rem;
-            opacity: 0.5;
-            letter-spacing: 0.4px;
-            color: #b8afdb;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 20px;
-        }
-
-        /* Адаптивность для телефонов */
-        @media (max-width: 480px) {
-            .card {
-                padding: 30px 20px;
-            }
-            h1 {
-                font-size: 2.2rem;
-            }
-            .avatar {
-                width: 100px;
-                height: 100px;
-                font-size: 48px;
-            }
-            .interests li {
-                padding: 6px 16px;
-                font-size: 0.85rem;
-            }
-        }
-    </style>
+    <title>Мыльнянка обыкновенная | Saponaria officinalis</title>
+    <!-- Подключаем внешний файл стилей -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="card">
-        <!-- Аватар / иконка -->
-        <div class="avatar">
-            🚀
-        </div>
+    <div class="container">
+        <!-- Главная карточка -->
+        <header class="glass-panel main-card">
+            <div class="icon">🌸</div>
+            <h1>Мыльнянка обыкновенная</h1>
+            <div class="subhead">✦ Saponaria officinalis ✦</div>
+            
+            <p class="description">
+                Многолетнее травянистое растение семейства Гвоздичные. 
+                Известна своими уникальными мылящимися свойствами. Её корневища 
+                содержат большое количество сапонинов, благодаря чему при растирании с водой образуют густую, стойкую пену.
+            </p>
 
-        <!-- Заголовок -->
-        <h1>Привет, мир!</h1>
-        <div class="subhead">
-            ✦  просто HTML-страничка  ✦
-        </div>
+            <ul class="tags">
+                <li>🌿 Лекарственная</li>
+                <li>🧼 Природное мыло</li>
+                <li>🌸 Декоративная</li>
+                <li>🍯 Медонос</li>
+            </ul>
+        </header>
 
-        <!-- Описание -->
-        <div class="description">
-            Это минималистичная карточка, сделанная с любовью.<br>
-            Стеклянный фон, градиенты и лёгкая анимация —<br>
-            всё для того, чтобы порадовать глаз.
-        </div>
+        <!-- Секция с галереей -->
+        <section class="glass-panel gallery-section">
+            <h2>Галерея</h2>
+            <div class="gallery-grid">
+                <!-- Картинки взяты с сервиса заглушек для примера, 
+                     вы можете заменить их на реальные фото мыльнянки -->
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/saponaria1/400/300" alt="Цветы мыльнянки" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/saponaria2/400/300" alt="Стебли и листья" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/saponaria3/400/300" alt="Мыльнянка в природе" class="gallery-img">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/seed/saponaria4/400/300" alt="Корень мыльнянки" class="gallery-img">
+                </div>
+            </div>
+        </section>
 
-        <!-- Список увлечений (можно поменять) -->
-        <ul class="interests">
-            <li>🎨 Дизайн</li>
-            <li>💻 Код</li>
-            <li>📸 Фото</li>
-            <li>☕ Кофе</li>
-            <li>🌌 Космос</li>
-        </ul>
+        <!-- Интерактивная секция (работает через JS) -->
+        <section class="glass-panel interactive-section">
+            <h2>Знаете ли вы?</h2>
+            <p id="factDisplay">Нажмите на кнопку, чтобы узнать интересный факт об этом растении.</p>
+            <button id="factBtn" class="btn">Узнать факт</button>
+        </section>
 
-        <!-- Кнопка с ссылкой -->
-        <a href="#" class="btn" onclick="alert('Спасибо, что нажали! 😊'); return false;">
-            Нажми меня
-        </a>
-
-        <!-- Футер -->
-        <div class="footer">
-            ⚡ сделано за 5 минут • 2026
-        </div>
+        <footer class="footer">
+            🌱 Создано с любовью к природе • 2026
+        </footer>
     </div>
+
+    <!-- Модальное окно для полноэкранного просмотра картинок -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="fullImage">
+        <div id="caption"></div>
+    </div>
+
+    <!-- Подключаем внешний файл скриптов -->
+    <script src="script.js"></script>
 </body>
 </html>
