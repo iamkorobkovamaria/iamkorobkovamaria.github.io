@@ -62,6 +62,10 @@
             button.addEventListener('click', function () {
                 onRemove(student.id);
             });
+            button.setAttribute(
+                'aria-label',
+                'Удалить запись: ' + (student.name || 'без имени')
+            );
             li.appendChild(button);
         }
 

@@ -16,7 +16,7 @@
             </span>
         </nav>
 
-        <h1>Firebase Realtime: студенты <span class="badge" id="realtimeBadge">нет связи</span></h1>
+        <h1>Firebase Realtime: студенты <span class="badge" id="realtimeBadge" role="status">нет связи</span></h1>
         <p class="subtitle">
             Те же select и insert, но Firebase присылает изменения узла
             <code>students_masha</code> сразу, без перезагрузки страницы.
@@ -44,7 +44,7 @@
                 <button type="button" id="addBtn">Добавить студента</button>
                 <button type="button" id="reloadBtn">Обновить список</button>
             </div>
-            <p class="status" id="status">Готово к работе</p>
+            <p class="status" id="status" role="status">Готово к работе</p>
         </section>
 
         <section class="card">
@@ -55,7 +55,7 @@
 
         <section class="card">
             <h2>Журнал изменений</h2>
-            <ul class="students" id="log"></ul>
+            <ul class="students" id="log" aria-live="polite" aria-label="Журнал изменений"></ul>
             <p class="empty" id="logEmpty">Изменений пока не было.</p>
         </section>
     </div>
