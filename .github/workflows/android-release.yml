@@ -36,6 +36,37 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Cache Android NDK
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ANDROID_HOME }}/ndk
+          key: ndk-${{ runner.os }}-28.2.13676358
+
+      - name: Install Android NDK
+        run: |
+          NDK_VERSION="28.2.13676358"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+
+          if [ -d "$ANDROID_HOME/ndk/$NDK_VERSION" ]; then
+            echo "NDK $NDK_VERSION already installed"
+            exit 0
+          fi
+
+          for attempt in 1 2 3; do
+            echo "Installing NDK $NDK_VERSION, attempt $attempt"
+            if yes | "$SDKMANAGER" --install "ndk;$NDK_VERSION"; then
+              if [ -d "$ANDROID_HOME/ndk/$NDK_VERSION" ]; then
+                echo "NDK $NDK_VERSION installed"
+                exit 0
+              fi
+            fi
+            rm -rf "$ANDROID_HOME/ndk/$NDK_VERSION"
+            sleep 10
+          done
+
+          echo "Failed to install NDK $NDK_VERSION"
+          exit 1
+
       - name: Analyze
         run: flutter analyze
 
