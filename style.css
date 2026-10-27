@@ -270,3 +270,51 @@ h2 {
     .gallery-grid { grid-template-columns: 1fr 1fr; }
     .modal-content { max-width: 95%; }
 }
+/* --- Секция лабораторных работ --- */
+.lab-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+}
+
+.lab-links {
+    list-style: none;
+    margin: 20px 0;
+    display: grid;
+    gap: 10px;
+}
+
+.lab-links li {
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.lab-links li:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateX(4px);
+}
+
+.lab-links a {
+    color: #a8e6cf;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.lab-links a:hover,
+.lab-links a:focus-visible {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.lab-section .description a {
+    color: #a8e6cf;
+}
+
+.lab-section code {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.9em;
+}
