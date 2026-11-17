@@ -29,14 +29,20 @@
             el.textContent =
                 'Конфигурация не заполнена. Откройте ' + fileName +
                 ' и укажите данные вашего проекта.';
+
+            // Без конфигурации список не загрузится: показываем пустое
+            // состояние, чтобы карточка не выглядела сломанной.
+            var empty = document.getElementById('empty');
+            if (empty) empty.hidden = false;
         }
     }
 
     /**
      * Создаёт элемент списка студентов.
      * Текст вставляется через textContent, поэтому HTML из базы не исполняется.
+     * @param {boolean} canRemove — показывать ли кнопку удаления (только для роли admin)
      */
-    function createStudentItem(student, onRemove) {
+    function createStudentItem(student, onRemove, canRemove) {
         const li = document.createElement('li');
 
         const info = document.createElement('div');
@@ -54,7 +60,7 @@
         info.appendChild(meta);
         li.appendChild(info);
 
-        if (onRemove && student.id !== undefined && student.id !== null) {
+        if (onRemove && canRemove && student.id !== undefined && student.id !== null) {
             const button = document.createElement('button');
             button.type = 'button';
             button.className = 'remove';
@@ -74,8 +80,9 @@
 
     /**
      * Перерисовывает список студентов.
+     * @param {boolean} canRemove — показывать ли кнопки удаления (только для роли admin)
      */
-    function renderStudents(listEl, emptyEl, students, onRemove) {
+    function renderStudents(listEl, emptyEl, students, onRemove, canRemove) {
         if (!listEl) return;
         listEl.textContent = '';
 
@@ -85,7 +92,7 @@
         }
 
         items.forEach(function (student) {
-            listEl.appendChild(createStudentItem(student, onRemove));
+            listEl.appendChild(createStudentItem(student, onRemove, canRemove));
         });
     }
 

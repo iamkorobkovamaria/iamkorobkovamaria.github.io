@@ -30,42 +30,13 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          # Закреплена версия, на которой проект проверен локально.
+          # На stable (сейчас 3.50) flutter analyze падает на deprecated material.dart.
+          flutter-version: "3.47.4"
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Cache Android NDK
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.ANDROID_HOME }}/ndk
-          key: ndk-${{ runner.os }}-28.2.13676358
-
-      - name: Install Android NDK
-        run: |
-          NDK_VERSION="28.2.13676358"
-          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-
-          if [ -d "$ANDROID_HOME/ndk/$NDK_VERSION" ]; then
-            echo "NDK $NDK_VERSION already installed"
-            exit 0
-          fi
-
-          for attempt in 1 2 3; do
-            echo "Installing NDK $NDK_VERSION, attempt $attempt"
-            if yes | "$SDKMANAGER" --install "ndk;$NDK_VERSION"; then
-              if [ -d "$ANDROID_HOME/ndk/$NDK_VERSION" ]; then
-                echo "NDK $NDK_VERSION installed"
-                exit 0
-              fi
-            fi
-            rm -rf "$ANDROID_HOME/ndk/$NDK_VERSION"
-            sleep 10
-          done
-
-          echo "Failed to install NDK $NDK_VERSION"
-          exit 1
 
       - name: Analyze
         run: flutter analyze
@@ -80,12 +51,12 @@ jobs:
         run: |
           mkdir -p artifacts
           cp build/app/outputs/flutter-apk/app-release.apk \
-             "artifacts/college-app-masha-${GITHUB_RUN_NUMBER}.apk"
+             "artifacts/college-app-${GITHUB_RUN_NUMBER}.apk"
 
       - name: Upload APK as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: college-app-masha-apk
+          name: college-app-apk
           path: flutter_project/artifacts/*.apk
           if-no-files-found: error
 

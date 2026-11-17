@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация — Google / GitHub</title>
+    <link rel="stylesheet" href="css/demo.css">
+</head>
+<body>
+    <div class="wrap">
+        <nav class="topbar">
+            <a href="index.html">← На главную</a>
+            <span>
+                <a href="supabase.html">Supabase версия</a> ·
+                <a href="firebase.html">Firebase версия</a>
+            </span>
+        </nav>
+
+        <h1>Вход в систему</h1>
+        <p class="subtitle">
+            Авторизация через Firebase Auth (Google и GitHub).
+            После входа отображается имя пользователя и его роль;
+            есть кнопка «Выйти».
+        </p>
+
+        <div class="notice" id="configNotice" hidden></div>
+
+        <!-- Форма входа (показывается, когда пользователь не залогинен) -->
+        <section class="card" id="auth-form">
+            <h2>Войти через</h2>
+            <div class="row" style="margin-top: 1rem;">
+                <button type="button" id="btn-login-google" style="flex: 1;">
+                    Войти через Google
+                </button>
+                <button type="button" id="btn-login-github" style="flex: 1;">
+                    Войти через GitHub
+                </button>
+            </div>
+            <p class="status" id="auth-status">Готово к работе</p>
+        </section>
+
+        <!-- Панель пользователя (показывается после входа) -->
+        <section class="card" id="user-panel" hidden>
+            <h2>Профиль пользователя</h2>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <img id="user-avatar" src="" alt="Avatar" style="width: 56px; height: 56px; border-radius: 50%; object-fit: cover; display: none;">
+                <div>
+                    <div id="user-name" style="font-weight: 600; font-size: 1.1rem;">Загрузка…</div>
+                    <div id="user-email" style="color: var(--muted); font-size: 0.95rem;"></div>
+                    <span id="user-role" class="badge"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field" style="flex: 1;">
+                    <label>UID</label>
+                    <div style="font-family: monospace; font-size: 0.85rem; background: #f5f6fa; padding: 0.5rem; border-radius: 6px;" id="user-uid">—</div>
+                </div>
+                <div class="field" style="flex: 1;">
+                    <label>Создан</label>
+                    <div id="user-created" style="font-size: 0.85rem;">—</div>
+                </div>
+                <div class="field" style="flex: 1;">
+                    <label>Последний вход</label>
+                    <div id="user-last-login" style="font-size: 0.85rem;">—</div>
+                </div>
+            </div>
+            <p id="first-entry-badge" class="status ok" style="margin-top: 1rem;"></p>
+            <button type="button" id="btn-logout" style="background: var(--danger);">Выйти</button>
+        </section>
+
+        <section class="card">
+            <h2>Что происходит при входе</h2>
+            <ul class="hint-list" style="margin-top: 0.75rem; padding-left: 1.2rem;">
+                <li><b>Первый вход (регистрация):</b> Firebase Auth создаёт запись в <i>Authentication</i> (если её ещё нет). На нашем сайте в базе данных появляется запись <i>roles/{uid}</i> с ролью. Самый первый пользователь получает роль <b>admin</b>, остальные — <b>viewer</b>.</li>
+                <li><b>Последующие входы:</b> запись в <i>Authentication</i> обновляется (поле <i>lastSignInTime</i>). В базе данных ничего нового не создаётся — роль подгружается из существующего узла <i>roles/{uid}</i>.</li>
+                <li>В этой же сессии 역할 определяет, кто может удалять записи студентов (только <b>admin</b>).</li>
+            </ul>
+        </section>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-database-compat.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

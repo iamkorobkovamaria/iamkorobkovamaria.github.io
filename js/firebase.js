@@ -1,14 +1,17 @@
 // ===========================
-// Firebase: чтение и добавление записей
+// Firebase: чтение, добавление и удаление записей
 // Realtime Database, узел: students/{key} = {name, specialty, grad_year}
 // ===========================
 (function () {
     'use strict';
 
-    // Отдельный узел проекта Марии: данные не пересекаются с моим.
-    var PATH = 'students_masha';
+    var PATH = 'students';
     var db = null;
     var els = {};
+
+    // Состояние сортировки (сортировка выполняется на клиенте после загрузки)
+    var sortColumn = 'name';
+    var sortAsc = true;
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -63,11 +66,53 @@
         els.addBtn.addEventListener('click', addStudent);
         els.reloadBtn.addEventListener('click', loadStudents);
 
+        // Кнопки сортировки по столбцам
+        document.querySelectorAll('.sort-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var col = btn.getAttribute('data-sort');
+                if (sortColumn === col) {
+                    sortAsc = !sortAsc;
+                } else {
+                    sortColumn = col;
+                    sortAsc = true;
+                }
+                updateSortButtons();
+                loadStudents();
+            });
+        });
+
         loadStudents();
     }
 
+    function updateSortButtons() {
+        document.querySelectorAll('.sort-btn').forEach(function (btn) {
+            var col = btn.getAttribute('data-sort');
+            var dirSpan = btn.querySelector('.sort-dir');
+            if (col === sortColumn) {
+                dirSpan.textContent = sortAsc ? ' ▲' : ' ▼';
+                btn.classList.add('active');
+            } else {
+                dirSpan.textContent = '';
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function sortRows(rows) {
+        return rows.slice().sort(function (a, b) {
+            var av = a[sortColumn];
+            var bv = b[sortColumn];
+            if (av === bv) return 0;
+            if (av === null || av === undefined) return sortAsc ? 1 : -1;
+            if (bv === null || bv === undefined) return sortAsc ? -1 : 1;
+            return sortAsc
+                ? String(av).localeCompare(String(bv))
+                : String(bv).localeCompare(String(av));
+        });
+    }
+
     /**
-     * SELECT: одноразовое чтение узла students.
+     * SELECT: одноразовое чтение узла students с клиентской сортировкой.
      */
     function loadStudents() {
         window.DemoUI.setStatus(els.status, 'Загружаем список...');
@@ -86,11 +131,14 @@
                     });
                 });
 
+                rows = sortRows(rows);
+
                 window.DemoUI.renderStudents(
                     els.students,
                     els.empty,
                     rows,
-                    removeStudent
+                    removeStudent,
+                    window.Auth && window.Auth.isAdmin()
                 );
                 window.DemoUI.setStatus(
                     els.status,
@@ -159,9 +207,18 @@
     }
 
     /**
-     * DELETE: удалить запись по ключу.
+     * DELETE: удалить запись по ключу (только для роли admin).
      */
     function removeStudent(id) {
+        if (!window.Auth || !window.Auth.isAdmin()) {
+            window.DemoUI.setStatus(
+                els.status,
+                'Удалять записи может только администратор',
+                'error'
+            );
+            return;
+        }
+
         db.ref(PATH + '/' + id)
             .remove()
             .then(function () {

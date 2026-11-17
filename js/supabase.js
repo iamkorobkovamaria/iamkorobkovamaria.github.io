@@ -1,14 +1,17 @@
 // ===========================
-// Supabase: чтение и добавление записей
+// Supabase: чтение, добавление и удаление записей
 // Таблица: students (id, name, specialty, grad_year)
 // ===========================
 (function () {
     'use strict';
 
-    // Отдельная таблица проекта Марии: данные не пересекаются с моим.
-    var TABLE = 'students_masha';
+    var TABLE = 'students';
     var client = null;
     var els = {};
+
+    // Состояние сортировки
+    var sortColumn = 'id';
+    var sortAsc = true;
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -54,11 +57,40 @@
         els.addBtn.addEventListener('click', addStudent);
         els.reloadBtn.addEventListener('click', loadStudents);
 
+        // Кнопки сортировки по столбцам
+        document.querySelectorAll('.sort-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var col = btn.getAttribute('data-sort');
+                if (sortColumn === col) {
+                    sortAsc = !sortAsc;
+                } else {
+                    sortColumn = col;
+                    sortAsc = true;
+                }
+                updateSortButtons();
+                loadStudents();
+            });
+        });
+
         loadStudents();
     }
 
+    function updateSortButtons() {
+        document.querySelectorAll('.sort-btn').forEach(function (btn) {
+            var col = btn.getAttribute('data-sort');
+            var dirSpan = btn.querySelector('.sort-dir');
+            if (col === sortColumn) {
+                dirSpan.textContent = sortAsc ? ' ▲' : ' ▼';
+                btn.classList.add('active');
+            } else {
+                dirSpan.textContent = '';
+                btn.classList.remove('active');
+            }
+        });
+    }
+
     /**
-     * SELECT: получить все записи таблицы.
+     * SELECT: получить все записи таблицы с текущей сортировкой.
      */
     function loadStudents() {
         window.DemoUI.setStatus(els.status, 'Загружаем список...');
@@ -66,7 +98,7 @@
         client
             .from(TABLE)
             .select('*')
-            .order('id', { ascending: true })
+            .order(sortColumn, { ascending: sortAsc })
             .then(function (result) {
                 if (result.error) {
                     window.DemoUI.setStatus(
@@ -137,9 +169,18 @@
     }
 
     /**
-     * DELETE: удалить запись по id.
+     * DELETE: удалить запись по id (только для роли admin).
      */
     function removeStudent(id) {
+        if (!window.Auth || !window.Auth.isAdmin()) {
+            window.DemoUI.setStatus(
+                els.status,
+                'Удалять записи может только администратор',
+                'error'
+            );
+            return;
+        }
+
         window.DemoUI.setStatus(els.status, 'Удаляем запись...');
 
         client
@@ -162,7 +203,13 @@
     }
 
     function render(rows) {
-        window.DemoUI.renderStudents(els.students, els.empty, rows, removeStudent);
+        window.DemoUI.renderStudents(
+            els.students,
+            els.empty,
+            rows,
+            removeStudent,
+            window.Auth && window.Auth.isAdmin()
+        );
     }
 
     function setBusy(busy) {
